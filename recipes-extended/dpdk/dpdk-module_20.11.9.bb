@@ -7,7 +7,7 @@ SRC_URI += " \
 "
 STABLE = "-stable"
 BRANCH = "20.11"
-SRCREV = "348875aab1c014ed1b913cf8976b5f8e009a1ebb"
+SRCREV = "ece54855816f1d03ef8ae08dedcb02318a97f3fb"
 S = "${WORKDIR}/git"
 
 inherit module
