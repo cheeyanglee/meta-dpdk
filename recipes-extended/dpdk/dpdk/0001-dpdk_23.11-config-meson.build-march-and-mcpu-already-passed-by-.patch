@@ -1,0 +1,60 @@
+From 280d08791609985524694c2d837a5edad12a2706 Mon Sep 17 00:00:00 2001
+From: Lee Chee Yang <chee.yang.lee@intel.com>
+Date: Mon, 4 Dec 2023 13:38:09 +0800
+Subject: [PATCH] config/meson.build -march and -mcpu already passed by Yocto
+
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+ config/meson.build | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
+
+diff --git a/config/meson.build b/config/meson.build
+index a9ccd56deb..6a463ac9f8 100644
+--- a/config/meson.build
++++ b/config/meson.build
+@@ -159,25 +159,25 @@ endif
+ dpdk_conf.set('RTE_MACHINE', cpu_instruction_set)
+ machine_args = []
+ 
+-if not is_ms_compiler
++#if not is_ms_compiler
+     # ppc64 does not support -march= at all, use -mcpu and -mtune for that
+-    if host_machine.cpu_family().startswith('ppc')
+-        machine_args += '-mcpu=' + cpu_instruction_set
+-        machine_args += '-mtune=' + cpu_instruction_set
+-        compiler_arch_support = cc.has_argument('-mcpu=' + cpu_instruction_set)
+-    else
+-        machine_args += '-march=' + cpu_instruction_set
++#    if host_machine.cpu_family().startswith('ppc')
++#        machine_args += '-mcpu=' + cpu_instruction_set
++#        machine_args += '-mtune=' + cpu_instruction_set
++#        compiler_arch_support = cc.has_argument('-mcpu=' + cpu_instruction_set)
++#    else
++#        machine_args += '-march=' + cpu_instruction_set
+         # arm manages generic/auto config in config/arm/meson.build
+-        if cpu_instruction_set != 'generic' and cpu_instruction_set != 'auto'
+-            compiler_arch_support = cc.has_argument('-march=' + cpu_instruction_set)
+-        else
+-            compiler_arch_support = true
+-        endif
+-    endif
+-    if not compiler_arch_support
+-        error('Compiler does not support "@0@" arch flag.'.format(cpu_instruction_set))
+-    endif
+-endif
++#        if cpu_instruction_set != 'generic' and cpu_instruction_set != 'auto'
++#            compiler_arch_support = cc.has_argument('-march=' + cpu_instruction_set)
++#        else
++#            compiler_arch_support = true
++#        endif
++#    endif
++#    if not compiler_arch_support
++#        error('Compiler does not support "@0@" arch flag.'.format(cpu_instruction_set))
++#    endif
++#endif
+ 
+ toolchain = cc.get_id()
+ dpdk_conf.set_quoted('RTE_TOOLCHAIN', toolchain)
+-- 
+2.37.3
+
